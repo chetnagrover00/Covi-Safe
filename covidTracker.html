@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <title>CovidTracker</title>
+
+  <style>
+    .Heading th {
+      color: white;
+      background-color: #0a3d62;
+    }
+
+    .live {
+      color: #3c6382;
+    }
+
+    #table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    #table tr:hover {
+      background-color: #ddd;
+    }
+
+    .return {
+      position: relative;
+    }
+
+    .back {
+      position: absolute;
+      top: 0;
+      right: 50px;
+    }
+
+    a {
+      font-size: 1rem;
+      background-color: #3c6382;
+      color: white;
+      padding: .6em;
+      border-radius: 5px;
+
+    }
+
+    a:hover {
+      text-decoration: none;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="return">
+    <p><a href="index.html" class="back"> Go Back</a>
+    </p>
+  </div>
+  <section class="corona_update container-fluid">
+    <div class="mb-3">
+      <h3 class="text-center text-uppercase mt-5 live">Covid 19 Live Updates</h3>
+    </div>
+    <div class="table-responsive mt-5">
+      <table class="table table-bordered table=striped text-center" id="table">
+        <tr class="Heading">
+          <th>Country</th>
+          <th>Total Confirmed</th>
+          <th>Total Recovered</th>
+          <th>Total Deaths</th>
+          <th>New Recovered</th>
+          <th>New Deaths</th>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <script>
+    var COUNT = [];
+
+    async function fetchData() {
+      let response = await fetch('https://api.covid19api.com/summary');
+      let data = await response.json();
+      let COUNT = data.Countries;
+      // console.log(data.Countries);
+
+      let table_body = document.createElement("tbody");
+
+      var table = document.getElementById('table');
+      // console.log(table);
+      for (let i = 0; i < COUNT.length; i++) {
+        let table_row = document.createElement("tr");
+        for (let j = 0; j < 1; j++) {
+          let country = document.createTextNode(COUNT[i].Country);
+          let TotalConfirmed = document.createTextNode(COUNT[i].TotalConfirmed);
+          let NewDeaths = document.createTextNode(COUNT[i].NewDeaths);
+          let TotalDeaths = document.createTextNode(COUNT[i].TotalDeaths);
+          let NewRecovered = document.createTextNode(COUNT[i].NewRecovered);
+          let TotalRecovered = document.createTextNode(COUNT[i].TotalRecovered);
+
+          let table_data1 = document.createElement("td");
+          let table_data2 = document.createElement("td");
+          let table_data3 = document.createElement("td");
+          let table_data4 = document.createElement("td");
+          let table_data5 = document.createElement("td");
+          let table_data6 = document.createElement("td");
+
+
+          table_data1.appendChild(country);
+          table_data2.appendChild(TotalConfirmed);
+          table_data3.appendChild(TotalRecovered);
+          table_data4.appendChild(TotalDeaths);
+          table_data5.appendChild(NewRecovered);
+          table_data6.appendChild(NewDeaths);
+
+          table_row.appendChild(table_data1);
+          table_row.appendChild(table_data2);
+          table_row.appendChild(table_data3);
+          table_row.appendChild(table_data4);
+          table_row.appendChild(table_data5);
+          table_row.appendChild(table_data6);
+
+        }
+        table_body.appendChild(table_row);
+      }
+      table.appendChild(table_body);
+    }
+    fetchData();
+
+  </script>
+</body>
+
+</html>
